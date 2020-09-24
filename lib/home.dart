@@ -18,16 +18,18 @@ List<Post> parsePosts(String responseBody) {
   return parsed.map<Post>((json) => Post.fromJson(json)).toList();
 }
 
-class HomePage extends StatelessWidget {
-  final String title;
-
-  HomePage({Key key, this.title}) : super(key: key);
+class FirstScreen extends StatelessWidget {
+//  final String title;
+//
+//  FirstScreen({Key key, this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+//        title: Text(title),
+        title: Text('Named Routes Demo'),
+
       ),
       body: FutureBuilder<List<Post>>(
         future: fetchPosts(http.Client()),
@@ -35,7 +37,7 @@ class HomePage extends StatelessWidget {
           if (snapshot.hasError) print(snapshot.error);
 
           return snapshot.hasData
-              ? ListViewPosts(posts: snapshot.data)
+              ? ListViewPosts (posts: snapshot.data)
               : Center(child: CircularProgressIndicator());
         },
       ),

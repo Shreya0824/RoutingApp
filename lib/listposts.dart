@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'post.dart';
 
-class ListViewPosts extends StatelessWidget {
+class ListViewPosts  extends StatelessWidget {
   final List<Post> posts;
 
-  ListViewPosts({Key key, this.posts}) : super(key: key);
+  ListViewPosts ({Key key, this.posts}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -52,12 +52,14 @@ class ListViewPosts extends StatelessWidget {
                   onTap: () =>
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) =>
-                              SecondPage(),
+                              SecondScreen(),
                             settings: RouteSettings(
                               arguments: posts[position], //_onTapItem(context, posts[position]),
                             ),
                           )
                       ),
+//                  Navigator.pushNamed(context, '/second')
+
                 )
               ],
             );
@@ -66,7 +68,7 @@ class ListViewPosts extends StatelessWidget {
   }
 
 }
-class SecondPage extends StatelessWidget {
+class SecondScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Post post = ModalRoute.of(context).settings.arguments;
@@ -85,8 +87,15 @@ class SecondPage extends StatelessWidget {
             Text(post.type),
             SizedBox(height: 30),
             Text(post.node_id),
-
-
+            SizedBox(height: 80),
+             RaisedButton(
+              onPressed: () {
+                // Navigate back to the first screen by popping the current route
+                // off the stack.
+                Navigator.pop(context);
+              },
+              child: Text('Go back!'),
+            ),
           ]
         )
 
