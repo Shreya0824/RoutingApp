@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'post.dart';
+import 'home.dart';
+import 'main.dart';
+
 
 class ListViewPosts  extends StatelessWidget {
-  final List<Post> posts;
-
+   List<Post> posts;
   ListViewPosts ({Key key, this.posts}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
