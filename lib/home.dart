@@ -7,7 +7,6 @@ import 'post.dart';
 import 'listposts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/gestures.dart';
 
 class FirstScreen extends StatelessWidget {
 
@@ -20,9 +19,11 @@ class FirstScreen extends StatelessWidget {
         title: Text('Named Routes Demo'),
       ),
       body: Builder(
-          builder: (BuildContext context) => Stack(
-            children: <Widget>[
+          builder: (BuildContext context) {
+            Provider.of<LoginNotifier>(context).fetchPosts(http.Client());
 
+            return Stack(
+            children: <Widget>[
                         Consumer<LoginNotifier>(
 
                             builder: (context, notif, child) => notif
@@ -31,11 +32,10 @@ class FirstScreen extends StatelessWidget {
                                 child:
                                 CircularProgressIndicator())
                                 :
-                            child,
-                            child: ListViewPosts(posts:snapshot.data,),
+                            ListViewPosts(posts: notif.data,)
 
                     )]
-                  ),
+                  );},
 
 
           )));
@@ -65,27 +65,27 @@ class FirstScreen extends StatelessWidget {
 class LoginNotifier extends ChangeNotifier{
 
   bool isLoading=false;
+  List<Post> data = List();
+
   List<Post> parsePosts(String responseBody) {
     final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
-
     return parsed.map<Post>((json) => Post.fromJson(json)).toList();
   }
 
-  Future<List<Post>> fetchPosts(http.Client client)  async{
+  Future fetchPosts(http.Client client)  async{
     isLoading=true;
     String error="";
     notifyListeners();
     try {
       final response = await client.get('https://api.github.com/users');
-      return compute(parsePosts, response.body);
+      data = await compute(parsePosts, response.body);
+      isLoading = false;
+      notifyListeners();
 
     } catch(e){
       isLoading=false;
       print('error');
       }
-     finally{
-      isLoading = false;
-      notifyListeners();
-    }
   }
 }
+
