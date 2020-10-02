@@ -28,12 +28,11 @@ class FirstScreen extends StatelessWidget {
                         Consumer<LoginNotifier>(
 
                             builder: (context, notif, child) => notif
-                                .isLoading
-                                ? Center(
-                                child:
-                                CircularProgressIndicator())
-                                :
-                            ListViewPosts(posts: notif.data,)
+                                .status == DataStatus.LOADING || notif.status == DataStatus.UNINIT
+                                ? Center(child: CircularProgressIndicator())
+                                : notif.status == DataStatus.SUCCESS ?
+                                  ListViewPosts(posts: notif.data): 
+                                  Center(child:Text("Something Went Wrong")
 
                     )]
                   );},
