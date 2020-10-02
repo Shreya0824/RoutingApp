@@ -7,6 +7,7 @@ import 'post.dart';
 import 'listposts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'loginnotifier.dart'
 
 class FirstScreen extends StatelessWidget {
 
@@ -39,53 +40,8 @@ class FirstScreen extends StatelessWidget {
 
 
           )));
-//        Builder<List<Post>>(
-//        future: fetchPosts(http.Client()),
-//        builder: (context, snapshot) {
-//
-//          Consumer<LoginNotifier>(
-//              builder: (context, notif, child) => notif
-//                  .isLoading
-//                  ? Center(
-//                  child:
-//                  CircularProgressIndicator())
-//                  : return snapshot.hasData
-//          ? ListViewPosts (posts: snapshot.data)
-//              : Center(child: CircularProgressIndicator());
-//              //child,
-////              child: Container()
-//          )
-//         // if (snapshot.hasError) print(snapshot.error);
-//        },
-   //   ),
 
     }
 }
 
-class LoginNotifier extends ChangeNotifier{
-
-  bool isLoading=false;
-  List<Post> data = List();
-
-  List<Post> parsePosts(String responseBody) {
-    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
-    return parsed.map<Post>((json) => Post.fromJson(json)).toList();
-  }
-
-  Future fetchPosts(http.Client client)  async{
-    isLoading=true;
-    String error="";
-    notifyListeners();
-    try {
-      final response = await client.get('https://api.github.com/users');
-      data = await compute(parsePosts, response.body);
-      isLoading = false;
-      notifyListeners();
-
-    } catch(e){
-      isLoading=false;
-      print('error');
-      }
-  }
-}
 
