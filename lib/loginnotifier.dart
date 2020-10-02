@@ -7,7 +7,7 @@ class LoginNotifier extends ChangeNotifier{
     final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
     return parsed.map<Post>((json) => Post.fromJson(json)).toList();
   }
-  Future<List<Post>> fetchPosts(http.Client client)  async{
+  Future<NULL> fetchPosts(http.Client client)  async{
 
 //  Future fetchPosts(http.Client client)  async{
 //status = DataState.LOADING;
@@ -22,7 +22,7 @@ class LoginNotifier extends ChangeNotifier{
       status = DataState.FAILED;
       print(e);
       }
-        return data;
+       // return data;
 
   }
 }
