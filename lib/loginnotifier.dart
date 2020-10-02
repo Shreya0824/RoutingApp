@@ -1,6 +1,6 @@
 class LoginNotifier extends ChangeNotifier{
 
-  bool isLoading=false;
+  var status = DataState.UNINIT;
   List<Post> data = List();
 
   List<Post> parsePosts(String responseBody) {
@@ -9,18 +9,24 @@ class LoginNotifier extends ChangeNotifier{
   }
 
   Future fetchPosts(http.Client client)  async{
-    isLoading=true;
-    String error="";
+    status = DataState.LOADING;
     notifyListeners();
     try {
       final response = await client.get('https://api.github.com/users');
       data = await compute(parsePosts, response.body);
-      isLoading = false;
+      status = DataState.SUCCESS;
       notifyListeners();
 
     } catch(e){
-      isLoading=false;
-      print('error');
+      status = DataState.FAILED;
+      print(e.toString);
       }
   }
+}
+
+enum DataState {
+  UNINIT,
+  LOADING,
+  SUCCESS,
+  FAILED
 }
